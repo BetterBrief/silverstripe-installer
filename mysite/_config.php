@@ -20,6 +20,7 @@ if (!defined('SS_ENVIRONMENT_FILE')) {
 	$emailWriter = new SS_LogEmailWriter('betterbrief+[user]@gmail.com');
 	$emailWriter->setFormatter(new BB_LogErrorEmailFormatter());
 	SS_Log::add_writer($emailWriter);
+	Config::inst()->update('GoogleSitemap', 'google_notification_enabled', true);
 }
 
 // stop the user being able to select h1 in the editor!
