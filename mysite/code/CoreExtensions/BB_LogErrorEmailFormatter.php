@@ -16,7 +16,7 @@ class BB_LogErrorEmailFormatter extends SS_LogErrorEmailFormatter {
 		}
 		$data .= '</table></div>';
 
-		if (isset($_POST) && count($_POST)) {
+		if (!empty($_POST)) {
 			$data .= '<div style="border: 5px green solid"><p style="color: white; background-color: green; margin: 0">Post vars</p><table>';
 			foreach ($_POST as $key => $var) {
 				$data .= '<tr><td><b>' . $key . '</b></td><td>' . Debug::text($var) . '</td></tr>';
@@ -24,7 +24,7 @@ class BB_LogErrorEmailFormatter extends SS_LogErrorEmailFormatter {
 			$data .= '</table></div>';
 		}
 
-		if (isset($_FILES) && count($_FILES)) {
+		if (!empty($_FILES)) {
 			$data .= '<div style="border: 5px green solid"><p style="color: white; background-color: green; margin: 0">Files vars</p><table>';
 			foreach ($_POST as $key => $var) {
 				$data .= '<tr><td><b>' . $key . '</b></td><td>' . Debug::text($var) . '</td></tr>';
