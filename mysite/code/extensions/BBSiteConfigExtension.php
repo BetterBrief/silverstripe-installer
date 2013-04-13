@@ -1,6 +1,6 @@
 <?php
 
-class BBSiteConfigDecorator extends DataExtension {
+class BBSiteConfigExtension extends DataExtension {
 
 	private static
 		$db = array(

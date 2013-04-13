@@ -8,7 +8,7 @@
  * @copyright copyright (c) 2010, Better Brief LLP
  * 
  */
-class BBImageDecorator extends DataExtension {
+class BBImageExtension extends DataExtension {
 	
 	public function Square($dim) {
 		return $this->owner->CroppedImage($dim, $dim);
