@@ -1,9 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!DOCTYPE html>
+<html>
 	
 	<head>
 		
-		<base href="$BaseHref"><!--[if IE 6]></base><![endif]-->
+		<% base_tag %>
 		
 		<title><% if MetaTitle %>$MetaTitle<% else %>$Title<% end_if %> &raquo; $SiteConfig.Title - $SiteConfig.Tagline</title>
 		
@@ -27,7 +27,7 @@
 		<script src="$ThemeDir/javascript/javascript.js" type="text/javascript"></script>
 		
 	</head>
-	
+
 	<body class="$ClassName">
 		
 		<div id="Container">

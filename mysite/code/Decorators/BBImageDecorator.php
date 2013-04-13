@@ -11,7 +11,7 @@
 class BBImageDecorator extends DataObjectDecorator {
 	
 	public function Square($dim) {
-		return $this->owner->CroppedImage($dim,$dim);
+		return $this->owner->CroppedImage($dim, $dim);
 	}
 	
 	public function Side() {
