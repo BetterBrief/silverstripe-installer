@@ -27,7 +27,7 @@ class Page extends SiteTree {
 		// default pages
 		//Make a home page
 		$homepage = Page::get()->filter('URLSegment', 'home')->first();
-		if (!$homepage->exists()) {
+		if (!$homepage || !$homepage->exists()) {
 			$homepage = new HomePage();
 
 			$homepage->Title = _t('SiteTree.DEFAULTHOMETITLE', 'Home');
@@ -45,38 +45,6 @@ class Page extends SiteTree {
 			$homepage->publish("Stage", "Live");
 			$homepage->flushCache();
 			DB::alteration_message("Home page type changed","repaired");
-		}
-
-		//Make a footer holder and redirector, if there is no footer, then
-		//it has no children, so create a sitemap and redirect to that.
-		$footerParent = RedirectorPage::get()->filter('URLSegment', 'footer')->first();
-		if (!$footerParent->exists()) {
-			$footerParent = new RedirectorPage();
-			$footerParent->Title = 'Footer';
-			$footerParent->FooterHolder = true;
-			$footerParent->Status = 'Published';
-			$footerParent->ShowInMenus = false;
-			$footerParent->ShowInSearch = false;
-			$footerParent->write();
-
-			$siteMap = new SiteMap();
-			$siteMap->Title = 'Sitemap';
-			$siteMap->NavigationLabel = 'Sitemap';
-			$siteMap->URLSegment = 'sitemap';
-			$siteMap->ParentID = $footerParent->ID;
-			$siteMap->Status = 'Published';
-			$siteMap->write();
-
-			$footerParent->LinkToID = $siteMap->ID;
-			$footerParent->write();
-
-			$footerParent->publish("Stage", "Live");
-			$siteMap->publish("Stage", "Live");
-
-			$siteMap->flushCache();
-
-			DB::alteration_message("Footer Holder created","created");
-			DB::alteration_message("Sitemap created","created");
 		}
 
 		parent::requireDefaultRecords();
@@ -107,8 +75,8 @@ class Page_Controller extends ContentController {
 	public function init() {
 		parent::init();
 		//allow me to quickly access pages by ID :)
-		if (is_numeric(Director::urlParam('URLSegment')) && Director::urlParam('URLSegment') == (int)Director::urlParam('URLSegment')) {
-			if ($page = DataObject::get_by_id('Page',(int)Director::urlParam('URLSegment'))) {
+		if (is_numeric($this->request->param('URLSegment')) && $this->request->param('URLSegment') == (int)$this->request->param('URLSegment')) {
+			if ($page = DataObject::get_by_id('Page',(int)$this->request->param('URLSegment'))) {
 				$this->redirect($page->Link(),301);
 			}
 		}
