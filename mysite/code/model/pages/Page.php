@@ -26,9 +26,9 @@ class Page extends SiteTree {
 	public function requireDefaultRecords() {
 		// default pages
 		//Make a home page
-		if(!$homepage = DataObject::get_one("Page", "URLSegment = 'home'")) {
+		$homepage = Page::get()->filter('URLSegment', 'home')->first();
+		if (!$homepage || !$homepage->exists()) {
 			$homepage = new HomePage();
-
 			$homepage->Title = _t('SiteTree.DEFAULTHOMETITLE', 'Home');
 			$homepage->Content = _t('SiteTree.DEFAULTHOMECONTENT', '<p>Welcome to SilverStripe! This is the default homepage. You can edit this page by opening <a href="admin/">the CMS</a>. You can now access the <a href="http://doc.silverstripe.com">developer documentation</a>, or begin <a href="http://doc.silverstripe.com/doku.php?id=tutorials">the tutorials.</a></p>');
 			$homepage->URLSegment = "home";
@@ -44,37 +44,6 @@ class Page extends SiteTree {
 			$homepage->publish("Stage", "Live");
 			$homepage->flushCache();
 			DB::alteration_message("Home page type changed","repaired");
-		}
-
-		//Make a footer holder and redirector, if there is no footer, then
-		//it has no children, so create a sitemap and redirect to that.
-		if (!DataObject::get_one('RedirectorPage',"URLSegment = 'footer'")) {
-			$footerParent = new RedirectorPage();
-			$footerParent->Title = 'Footer';
-			$footerParent->FooterHolder = true;
-			$footerParent->Status = 'Published';
-			$footerParent->ShowInMenus = false;
-			$footerParent->ShowInSearch = false;
-			$footerParent->write();
-
-			$siteMap = new SiteMap();
-			$siteMap->Title = 'Sitemap';
-			$siteMap->NavigationLabel = 'Sitemap';
-			$siteMap->URLSegment = 'sitemap';
-			$siteMap->ParentID = $footerParent->ID;
-			$siteMap->Status = 'Published';
-			$siteMap->write();
-
-			$footerParent->LinkToID = $siteMap->ID;
-			$footerParent->write();
-
-			$footerParent->publish("Stage", "Live");
-			$siteMap->publish("Stage", "Live");
-
-			$siteMap->flushCache();
-
-			DB::alteration_message("Footer Holder created","created");
-			DB::alteration_message("Sitemap created","created");
 		}
 
 		parent::requireDefaultRecords();
@@ -105,8 +74,8 @@ class Page_Controller extends ContentController {
 	public function init() {
 		parent::init();
 		//allow me to quickly access pages by ID :)
-		if (is_numeric(Director::urlParam('URLSegment')) && Director::urlParam('URLSegment') == (int)Director::urlParam('URLSegment')) {
-			if ($page = DataObject::get_by_id('Page',(int)Director::urlParam('URLSegment'))) {
+		if (is_numeric($this->request->param('URLSegment')) && $this->request->param('URLSegment') == (int)$this->request->param('URLSegment')) {
+			if ($page = DataObject::get_by_id('Page',(int)$this->request->param('URLSegment'))) {
 				$this->redirect($page->Link(),301);
 			}
 		}

@@ -3,7 +3,7 @@
 global $project;
 $project = 'mysite';
 
-require_once(SAPPHIRE_PATH . '/conf/ConfigureFromEnv.php');
+require_once(FRAMEWORK_PATH . '/conf/ConfigureFromEnv.php');
 
 //Live details here if they don't configure from environment
 if (!defined('SS_ENVIRONMENT_FILE')) {
@@ -36,10 +36,6 @@ GD::set_default_quality(85);
 //i18n::set_default_locale('en_GB');
 i18n::set_locale('en_GB');
 
-if (class_exists('DataObjectManager')){
-    DataObjectManager::allow_assets_override(true);
-}
-
 // stop the user being able to select h1 in the editor!
 HtmlEditorConfig::get('cms')->setOption('theme_advanced_blockformats', 'p,h2,h3,h4,h5,h6,address,pre');
 
@@ -49,13 +45,14 @@ LeftAndMain::require_javascript('mysite/javascript/admin-analytics.js');
 //allow full search of the site
 //FulltextSearchable::enable();
 
-// Breadcrumb delimiter
-//SiteTree::$breadcrumbs_delimiter = " - ";
-
-Validator::set_javascript_validation_handler('none');
 
 //stop default pages
-SiteTree::set_create_default_pages(false);
+if(class_exists('SiteTree')) {
+	SiteTree::enable_nested_urls();
+	SiteTree::set_create_default_pages(false);
+	// Breadcrumb delimiter
+	//SiteTree::$breadcrumbs_delimiter = " - ";
+}
 
 //removes m parameter
 Requirements::set_suffix_requirements(false);
@@ -63,7 +60,3 @@ Requirements::set_suffix_requirements(false);
 // This line set's the current theme. More themes can be
 // downloaded from http://www.silverstripe.org/themes/
 SSViewer::set_theme('default');
-
-// enable nested URLs for this site (e.g. page/sub-page/)
-if(class_exists('SiteTree')) SiteTree::enable_nested_urls();
-
