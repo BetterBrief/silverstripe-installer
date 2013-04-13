@@ -3,16 +3,67 @@
 global $project;
 $project = 'mysite';
 
-global $database;
-$database = '';
+require_once(SAPPHIRE_PATH . '/conf/ConfigureFromEnv.php');
 
-require_once('conf/ConfigureFromEnv.php');
+//Live details here if they don't configure from environment
+if (!defined('SS_ENVIRONMENT_FILE')) {
+	global $databaseConfig;
+	$databaseConfig = array(
+		'type' => 'MySQLDatabase',
+		'username'      => '',
+		'password'      => '',
+		'database'      => '',
+		'server'        => '',
+		'path'          => ''
+	);
+	Email::setAdminEmail('');
+	//add in our custom error emailer
+	$emailWriter = new SS_LogEmailWriter('betterbrief+[user]@gmail.com');
+	$emailWriter->setFormatter(new BB_LogErrorEmailFormatter());
+	SS_Log::add_writer($emailWriter);
+}
 
 MySQLDatabase::set_connection_charset('utf8');
 
-// Set the current theme. More themes can be downloaded from
-// http://www.silverstripe.org/themes/
-SSViewer::set_theme('simple');
+DataObject::add_extension('Image', 'BBImageDecorator'); //enhancing the image class with a decorator
+DataObject::add_extension('SiteConfig','BBSiteConfigDecorator'); //enhancing the siteconfig with a decorator
 
-// Enable nested URLs for this site (e.g. page/sub-page/)
+GD::set_default_quality(85);
+
+// Set the correct default language, this is used for Users
+// and for the content-language meta tag
+//i18n::set_default_lang('en_GB');
+//i18n::set_default_locale('en_GB');
+i18n::set_locale('en_GB');
+
+if (class_exists('DataObjectManager')){
+    DataObjectManager::allow_assets_override(true);
+}
+
+// stop the user being able to select h1 in the editor!
+HtmlEditorConfig::get('cms')->setOption('theme_advanced_blockformats', 'p,h2,h3,h4,h5,h6,address,pre');
+
+//set admin user var for analytics for admin users
+LeftAndMain::require_javascript('mysite/javascript/admin-analytics.js');
+
+//allow full search of the site
+//FulltextSearchable::enable();
+
+// Breadcrumb delimiter
+//SiteTree::$breadcrumbs_delimiter = " - ";
+
+Validator::set_javascript_validation_handler('none');
+
+//stop default pages
+SiteTree::set_create_default_pages(false);
+
+//removes m parameter
+Requirements::set_suffix_requirements(false);
+
+// This line set's the current theme. More themes can be
+// downloaded from http://www.silverstripe.org/themes/
+SSViewer::set_theme('default');
+
+// enable nested URLs for this site (e.g. page/sub-page/)
 if(class_exists('SiteTree')) SiteTree::enable_nested_urls();
+
