@@ -16,11 +16,17 @@ if (!defined('SS_ENVIRONMENT_FILE')) {
 		'server'        => '',
 		'path'          => ''
 	);
-	Email::setAdminEmail('');
+	//set the environment type (dev|test|live)
+	Config::inst()->update('Director', 'environment_type', 'live');
+}
+
+if (Director::isLive()) {
 	//add in our custom error emailer
 	$emailWriter = new SS_LogEmailWriter('betterbrief+[user]@gmail.com');
 	$emailWriter->setFormatter(new BB_LogErrorEmailFormatter());
 	SS_Log::add_writer($emailWriter);
+	Config::inst()->update('GoogleSitemap', 'google_notification_enabled', true);
+	//Config::inst()->update('Email', 'admin_email', '');
 }
 
 MySQLDatabase::set_connection_charset('utf8');
