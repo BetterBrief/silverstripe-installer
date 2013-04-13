@@ -9,11 +9,11 @@ class Page extends SiteTree {
 	//static $can_be_root = true; //
 	//static $hide_ancestor = null; //dont show ancestry class
 
-	public static $db = array(
-	);
-
-	public static $has_one = array(
-	);
+	public static
+		$db = array(
+		),
+		$has_one = array(
+		);
 
 	/**
 	 * Add default records to database.
@@ -23,7 +23,7 @@ class Page extends SiteTree {
 	 * records when the database is built, but make sure you call
 	 * parent::requireDefaultRecords().
 	 */
-	function requireDefaultRecords() {
+	public function requireDefaultRecords() {
 		// default pages
 		//Make a home page
 		if(!$homepage = DataObject::get_one("Page", "URLSegment = 'home'")) {
@@ -98,10 +98,11 @@ class Page_Controller extends ContentController {
 	 *
 	 * @var array
 	 */
-	public static $allowed_actions = array (
-	);
+	public static
+		$allowed_actions = array (
+		);
 
-	function init() {
+	public function init() {
 		parent::init();
 		//allow me to quickly access pages by ID :)
 		if (is_numeric(Director::urlParam('URLSegment')) && Director::urlParam('URLSegment') == (int)Director::urlParam('URLSegment')) {
@@ -125,7 +126,7 @@ class Page_Controller extends ContentController {
 	 * @return string The link.
 	 *
 	 */
-	function getPageLink($pageType,$action = null) {
+	public function getPageLink($pageType,$action = null) {
 		$varName = $pageType . 'Link';
 		if ($action && isset($this->$varName)) {
 			return Controller::join_links($this->$varName,$action);
@@ -151,12 +152,12 @@ class Page_Controller extends ContentController {
 	}
 
 	// For templates
-	function PageLink($pageType) {
+	public function PageLink($pageType) {
 		return $this->getPageLink($pageType);
 	}
 
 	// relies on requireDefaultRecords
-	function getFooterMenu() {
+	public function getFooterMenu() {
 		$footer = DataObject::get_one('RedirectorPage', 'URLSegment = \'footer\'');
 		if($footer) {
 			return $footer->Children();
@@ -170,7 +171,7 @@ class Page_Controller extends ContentController {
 	 *
 	 * @return string A string of year(s)
 	 */
-	function getCopyrightYear($startYear = 2012) {
+	public function getCopyrightYear($startYear = 2012) {
 		$curYear = date('Y');
 		if ($curYear > $startYear) {
 			return $startYear . ' - ' . $curYear;

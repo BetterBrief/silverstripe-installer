@@ -2,7 +2,7 @@
 
 class BB_LogErrorEmailFormatter extends SS_LogErrorEmailFormatter {
 
-	function format($event) {
+	public function format($event) {
 		$array = parent::format($event);
 		$subject = $array['subject'];
 		$data = $array['data'];
