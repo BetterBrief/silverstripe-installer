@@ -1,10 +1,6 @@
 <?php
 
 class SiteMap extends Page {
-	static $db = array(
-	);
-	static $has_one = array(
-	);
 }
 
 class SiteMap_Controller extends Page_Controller {
@@ -16,7 +12,7 @@ class SiteMap_Controller extends Page_Controller {
 	 * Note that this will only skip ErrorPage's at the top/root level of the site.
 	 * If you have an ErrorPage class somewhere else in the hierarchy, it will be displayed.
 	 */
-	function SiteMap() {
+	public function SiteMap() {
 		$rootLevel = DataObject::get("Page", "ParentID = 0"); // Pages at the root level only
 		$output = "";
 		$output = $this->makeList($rootLevel);
