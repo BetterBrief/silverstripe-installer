@@ -18,16 +18,16 @@ i18n:
   default_locale: 'en_GB'
 Image:
   extensions:
-    - BBImageDecorator
+    - BBImageExtension
 SiteConfig:
   extensions:
-    - BBConfigExtension
+    - BBSiteConfigExtension
 SiteTree:
   create_default_pages: No
   nested_urls: Yes
 DateField:
   default_config:
-    - {showcalendar: Yes}
+    showcalendar: Yes
 LeftAndMain:
   extra_requirements_javascript:
     - "mysite/javascript/admin-analytics.js": []
