@@ -15,14 +15,14 @@ class HomePage extends Page {
 		);
 
 	public function canCreate($member = null) {
-		return DataObject::get_one('HomePage') ? false : parent::canCreate($member);
+		return HomePage::get()->first() ? false : parent::canCreate($member);
 	}
 
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
 
 		//don't let them change the home page URL... it's a pain when they do
-		$fields->removeFieldFromTab('Root.Content.Metadata','URL');
+		$fields->removeFieldFromTab('Root','URLSegment');
 
 		return $fields;
 	}

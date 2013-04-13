@@ -3,7 +3,7 @@
 global $project;
 $project = 'mysite';
 
-require_once(SAPPHIRE_PATH . '/conf/ConfigureFromEnv.php');
+require_once(FRAMEWORK_PATH . '/conf/ConfigureFromEnv.php');
 
 //Live details here if they don't configure from environment
 if (!defined('SS_ENVIRONMENT_FILE')) {
@@ -52,10 +52,11 @@ LeftAndMain::require_javascript('mysite/javascript/admin-analytics.js');
 // Breadcrumb delimiter
 //SiteTree::$breadcrumbs_delimiter = " - ";
 
-Validator::set_javascript_validation_handler('none');
-
 //stop default pages
-SiteTree::set_create_default_pages(false);
+if(class_exists('SiteTree')) {
+	SiteTree::enable_nested_urls();
+	SiteTree::set_create_default_pages(false);
+}
 
 //removes m parameter
 Requirements::set_suffix_requirements(false);
@@ -63,6 +64,3 @@ Requirements::set_suffix_requirements(false);
 // This line set's the current theme. More themes can be
 // downloaded from http://www.silverstripe.org/themes/
 SSViewer::set_theme('default');
-
-// enable nested URLs for this site (e.g. page/sub-page/)
-SiteTree::enable_nested_urls();

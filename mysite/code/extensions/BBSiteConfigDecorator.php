@@ -2,14 +2,11 @@
 
 class BBSiteConfigDecorator extends DataObjectDecorator {
 
-	public function extraStatics() {
-		return array(
-			'db' => array(
-			)
+	public static
+		$db = array(
 		);
-	}
 
-	public function updateCMSFields(FieldSet &$fields) {
+	public function updateCMSFields(FieldList $fields) {
 		//remove the theme option
 		$fields->removeByName('Theme');
 	}
