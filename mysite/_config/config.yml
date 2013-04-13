@@ -6,4 +6,28 @@ After: 'framework/*','cms/*'
 # See http://doc.silverstripe.org/framework/en/topics/configuration
 # Caution: Indentation through two spaces, not tabs
 SSViewer:
-  theme: 'simple'
+  theme: 'default'
+#Email:
+#  admin_email: ''
+MySQLDatabase:
+  connection_charset: 'utf8'
+GDBackend:
+  default_quality: 85
+i18n:
+  current_locale: 'en_GB'
+  default_locale: 'en_GB'
+Image:
+  extensions:
+    - BBImageDecorator
+SiteConfig:
+  extensions:
+    - BBConfigExtension
+SiteTree:
+  create_default_pages: No
+  nested_urls: Yes
+DateField:
+  default_config:
+    - {showcalendar: Yes}
+LeftAndMain:
+  extra_requirements_javascript:
+    - "mysite/javascript/admin-analytics.js": []
