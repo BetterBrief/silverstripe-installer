@@ -25,15 +25,14 @@ if (!defined('SS_ENVIRONMENT_FILE')) {
 
 MySQLDatabase::set_connection_charset('utf8');
 
-DataObject::add_extension('Image', 'BBImageDecorator'); //enhancing the image class with a decorator
-DataObject::add_extension('SiteConfig','BBSiteConfigDecorator'); //enhancing the siteconfig with a decorator
+DataObject::add_extension('Image', 'BBImageExtension'); //enhancing the image class with a decorator
+DataObject::add_extension('SiteConfig','BBSiteConfigExtension'); //enhancing the siteconfig with a decorator
 
 GD::set_default_quality(85);
 
 // Set the correct default language, this is used for Users
 // and for the content-language meta tag
 //i18n::set_default_lang('en_GB');
-//i18n::set_default_locale('en_GB');
 i18n::set_locale('en_GB');
 
 // stop the user being able to select h1 in the editor!
@@ -45,13 +44,10 @@ LeftAndMain::require_javascript('mysite/javascript/admin-analytics.js');
 //allow full search of the site
 //FulltextSearchable::enable();
 
-
 //stop default pages
 if(class_exists('SiteTree')) {
 	SiteTree::enable_nested_urls();
 	SiteTree::set_create_default_pages(false);
-	// Breadcrumb delimiter
-	//SiteTree::$breadcrumbs_delimiter = " - ";
 }
 
 //removes m parameter

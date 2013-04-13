@@ -1,6 +1,6 @@
 <?php
 /**
- * BB Image Decorator
+ * BB Image Extension
  * 
  * Custom Image class to allow greater manipulation of images
  * 
@@ -8,7 +8,7 @@
  * @copyright copyright (c) 2010, Better Brief LLP
  * 
  */
-class BBImageDecorator extends DataObjectDecorator {
+class BBImageExtension extends DataExtension {
 	
 	public function Square($dim) {
 		return $this->owner->CroppedImage($dim, $dim);
