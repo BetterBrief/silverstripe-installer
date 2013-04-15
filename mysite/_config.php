@@ -16,6 +16,9 @@ if (!defined('SS_ENVIRONMENT_FILE')) {
 		'server'        => '',
 		'path'          => ''
 	);
+	//Director::set_environment_type('live');
+}
+if (Director::isLive()) {
 	Email::setAdminEmail('');
 	//add in our custom error emailer
 	$emailWriter = new SS_LogEmailWriter('betterbrief+[user]@gmail.com');
