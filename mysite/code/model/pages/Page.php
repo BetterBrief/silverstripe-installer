@@ -3,9 +3,65 @@ class Page extends SiteTree {
 
 	private static
 		$db = array(
+			'MetaTitle' => 'Varchar(255)'
 		),
 		$has_one = array(
 		);
+
+	/**
+	 * @inheritdoc
+	 *
+	 * Adding in the MetaTitle field
+	 */
+	public function getCMSFields() {
+		$fields = parent::getCMSFields();
+
+		$fields->addFieldToTab('Root.Main.Metadata', new TextField('MetaTitle'), 'MetaDescription');
+
+		return $fields;
+	}
+
+	/**
+	 * A custom getter for MetaTitle, if there isn't a value, use the page Title
+	 *
+	 * @return string The MetaTitle to use
+	 */
+	public function getMetaTitle() {
+		if (!$metaTitle = $this->getField('MetaTitle')) {
+			$metaTitle = $this->Title;
+		}
+		return $metaTitle;
+	}
+
+	/**
+	 * A custom setter for MetaTitle, if the meta title is the same as the title
+	 * don't store it in the DB
+	 *
+	 * @param string $val The value of the MetaTitle field
+	 */
+	public function setMetaTitle($val) {
+		if ($val == $this->Title) {
+			$val = '';
+		}
+		$this->setField('MetaTitle', $val);
+	}
+
+	/**
+	 * Ovverride the core MetaTags function to include the Title if we want
+	 *
+	 * @inheritdoc
+	 *
+	 * @return string the MetaTags to use on the page
+	 */
+	public function MetaTags($includeTitle = true) {
+		$tags = "";
+		//if they want the title include it
+		if($includeTitle === true || strtolower($includeTitle) == 'true') {
+			$tags .= "<title>" . Convert::raw2xml($this->MetaTitle) . "</title>\n";
+		}
+		//never include the title as we're doing this ourselves
+		return $tags . parent::MetaTags(false);
+	}
 
 	/**
 	 * Add default records to database.
@@ -18,7 +74,7 @@ class Page extends SiteTree {
 	public function requireDefaultRecords() {
 		// default pages
 		//Make a home page
-		$homepage = Page::get()->filter('URLSegment', 'home')->first();
+		$homepage = Page::get()->filter('URLSegment', RootURLController::get_homepage_link())->first();
 		if (!$homepage || !$homepage->exists()) {
 			$homepage = new HomePage();
 
