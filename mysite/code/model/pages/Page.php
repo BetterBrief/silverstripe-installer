@@ -16,7 +16,12 @@ class Page extends SiteTree {
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
 
-		$fields->addFieldToTab('Root.Main.Metadata', new TextField('MetaTitle'), 'MetaDescription');
+		$fields->addFieldToTab(
+			'Root.Main.Metadata',
+			TextField::create('MetaTitle')
+				->setRightTitle('This will be displayed as the title in SERPs as well as the top bar of the browser window or tab'),
+			'MetaDescription'
+		);
 
 		return $fields;
 	}
@@ -80,7 +85,7 @@ class Page extends SiteTree {
 
 			$homepage->Title = _t('SiteTree.DEFAULTHOMETITLE', 'Home');
 			$homepage->Content = _t('SiteTree.DEFAULTHOMECONTENT', '<p>Welcome to SilverStripe! This is the default homepage. You can edit this page by opening <a href="admin/">the CMS</a>. You can now access the <a href="http://doc.silverstripe.com">developer documentation</a>, or begin <a href="http://doc.silverstripe.com/doku.php?id=tutorials">the tutorials.</a></p>');
-			$homepage->URLSegment = "home";
+			$homepage->URLSegment = RootURLController::get_homepage_link();
 			$homepage->Status = "Published";
 			$homepage->write();
 			$homepage->publish("Stage", "Live");
