@@ -30,4 +30,4 @@ DateField:
     showcalendar: Yes
 LeftAndMain:
   extra_requirements_javascript:
-    - "mysite/javascript/admin-analytics.js": []
+    - "mysite/javascript/admin-analytics.js"
