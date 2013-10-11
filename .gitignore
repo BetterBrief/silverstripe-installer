@@ -8,3 +8,6 @@ silverstripe-cache
 .idea
 .DS_Store
 vendor/
+*.kpf
+*.komodoproject
+.komodotools
