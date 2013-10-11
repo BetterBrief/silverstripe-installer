@@ -1,15 +1,7 @@
 <?php
 class Page extends SiteTree {
 
-	// tree customisation
-	//static $icon = "";
-	//static $allowed_children = array("SiteTree"); // set to string "none" or array of classname(s)
-	//static $default_child = "Page"; //one classname
-	//static $default_parent = null; // NOTE: has to be a URL segment NOT a class name
-	//static $can_be_root = true; //
-	//static $hide_ancestor = null; //dont show ancestry class
-
-	public static
+	private static
 		$db = array(
 			'MetaTitle' => 'Varchar(255)'
 		),
@@ -107,6 +99,7 @@ class Page extends SiteTree {
 			$homepage->flushCache();
 			DB::alteration_message("Home page type changed","repaired");
 		}
+
 		parent::requireDefaultRecords();
 	}
 
@@ -128,7 +121,7 @@ class Page_Controller extends ContentController {
 	 *
 	 * @var array
 	 */
-	public static
+	private static
 		$allowed_actions = array (
 		);
 
@@ -139,58 +132,6 @@ class Page_Controller extends ContentController {
 			if ($page = DataObject::get_by_id('Page',(int)$this->request->param('URLSegment'))) {
 				$this->redirect($page->Link(),301);
 			}
-		}
-	}
-
-	/**
-	 * get Page Link
-	 *
-	 * Gets a page link for a specific type of page. Best used for pages that
-	 * will only have one instance, or it doesnt matter which instance you want
-	 *
-	 * Caches the result
-	 *
-	 * @param string $pageType The page type to get the link of
-	 * @param string $action The action to add to the end of the URL
-	 *
-	 * @return string The link.
-	 *
-	 */
-	public function getPageLink($pageType,$action = null) {
-		$varName = $pageType . 'Link';
-		if ($action && isset($this->$varName)) {
-			return Controller::join_links($this->$varName,$action);
-		}
-		if (!isset($this->$varName)) {
-			if ($this->ClassName == $pageType) {
-				$page = $this;
-			}
-			else {
-				$page = DataObject::get_one($pageType);
-			}
-			if ($page) {
-				$this->$varName = $page->Link();
-				if ($action) {
-					return $page->Link($action);
-				}
-			}
-			else {
-				$this->$varName = '#';
-			}
-		}
-		return $this->$varName;
-	}
-
-	// For templates
-	public function PageLink($pageType) {
-		return $this->getPageLink($pageType);
-	}
-
-	// relies on requireDefaultRecords
-	public function getFooterMenu() {
-		$footer = DataObject::get_one('RedirectorPage', 'URLSegment = \'footer\'');
-		if($footer) {
-			return $footer->Children();
 		}
 	}
 
