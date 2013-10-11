@@ -23,6 +23,7 @@
 <Files ~ "\.ya?ml$">
 	Order allow,deny
 	Deny from all
+	Allow from *.betterbrief.co.uk
 </Files>
 
 <IfModule mod_deflate.c>
