@@ -171,7 +171,7 @@ class Page_Controller extends ContentController {
 	 *
 	 * @return string A string of year(s)
 	 */
-	public function getCopyrightYear($startYear = 2012) {
+	public function getCopyrightYear($startYear = 2013) {
 		$curYear = date('Y');
 		if ($curYear > $startYear) {
 			return $startYear . ' - ' . $curYear;
