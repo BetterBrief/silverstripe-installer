@@ -4,8 +4,6 @@ class Page extends SiteTree {
 	private static
 		$db = array(
 			'MetaTitle' => 'Varchar(255)'
-		),
-		$has_one = array(
 		);
 
 	/**
@@ -122,18 +120,7 @@ class Page_Controller extends ContentController {
 	 * @var array
 	 */
 	private static
-		$allowed_actions = array (
-		);
-
-	public function init() {
-		parent::init();
-		//allow me to quickly access pages by ID :)
-		if (is_numeric($this->request->param('URLSegment')) && $this->request->param('URLSegment') == (int)$this->request->param('URLSegment')) {
-			if ($page = DataObject::get_by_id('Page',(int)$this->request->param('URLSegment'))) {
-				$this->redirect($page->Link(),301);
-			}
-		}
-	}
+		$allowed_actions = array();
 
 	/**
 	 * Copyright Year
@@ -142,7 +129,7 @@ class Page_Controller extends ContentController {
 	 *
 	 * @return string A string of year(s)
 	 */
-	public function getCopyrightYear($startYear = 2013) {
+	public function getCopyrightYear($startYear = 2014) {
 		$curYear = date('Y');
 		if ($curYear > $startYear) {
 			return $startYear . ' - ' . $curYear;
