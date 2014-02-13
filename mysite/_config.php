@@ -37,3 +37,9 @@ HtmlEditorConfig::get('cms')->setOption('theme_advanced_blockformats', 'p,h2,h3,
 
 //removes m parameter
 Requirements::set_suffix_requirements(false);
+
+if (Director::isDev()) {
+	Config::inst()->update('RestfulService', 'default_curl_options', array(
+		CURLOPT_CONNECTTIMEOUT => 10
+	));
+}
